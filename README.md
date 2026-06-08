@@ -51,7 +51,7 @@ The analysis is based on **1,000 transactions** recorded between **January 2023 
 - **Excel** — Data source and preprocessing
 
 ## 🌐 Live Dashboards
-👉 **[https://paulagbo84.github.io/sales-Dashboards](https://paulagbo84.github.io/sales-Dashboards)**
+👉 **[https://paulagbo84.github.io/sales-Dashboards/](https://paulagbo84.github.io/sales-Dashboards/)**
 
 ## 👤 Author
 **Paul Agbo**
