@@ -1,1 +1,278 @@
-sales_bi_executive_summary.htm
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales BI — Executive Summary Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f4f6f9; font-family: 'Segoe UI', sans-serif; color: #1a1a2e; padding: 24px; }
+    .db-wrap { max-width: 1100px; margin: 0 auto; }
+
+    .db-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;
+      background: #1e3a5f; color: #fff; padding: 18px 28px; border-radius: 12px; }
+    .db-title { font-size: 20px; font-weight: 700; margin: 0; }
+    .db-sub { font-size: 13px; opacity: 0.75; margin-top: 4px; }
+    .badge { font-size: 11px; padding: 5px 12px; border-radius: 20px; background: rgba(255,255,255,0.15);
+      color: #fff; white-space: nowrap; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 24px; }
+    .kpi { background: #fff; border-radius: 10px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .kpi-val { font-size: 22px; font-weight: 700; color: #1e3a5f; line-height: 1.2; }
+    .kpi-lbl { font-size: 11px; color: #6b7280; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-tag { display: inline-block; font-size: 11px; margin-top: 6px; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+    .pos { background: #dcfce7; color: #166534; }
+    .neg { background: #fee2e2; color: #991b1b; }
+
+    .chart-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(470px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .chart-card { background: #fff; border-radius: 12px; padding: 20px 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .chart-title { font-size: 14px; font-weight: 700; color: #1e3a5f; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; font-size: 12px; color: #6b7280; }
+    .legend span { display: flex; align-items: center; gap: 5px; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    .section-hd { font-size: 12px; font-weight: 700; color: #374151; text-transform: uppercase;
+      letter-spacing: 0.06em; margin: 0 0 12px; border-left: 4px solid #2563eb; padding-left: 10px; }
+
+    .insight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-bottom: 24px; }
+    .insight { border-radius: 10px; padding: 12px 16px; font-size: 13px; }
+    .insight.good { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    .insight.warn { background: #fff1f2; border: 1px solid #fecdd3; color: #991b1b; }
+    .insight-label { font-size: 11px; opacity: 0.7; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .insight-val { font-weight: 600; }
+
+    .footer { font-size: 12px; color: #9ca3af; border-top: 1px solid #e5e7eb;
+      padding-top: 14px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .footer a { color: #2563eb; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="db-wrap">
+
+  <!-- Header -->
+  <div class="db-header">
+    <div>
+      <p class="db-title">📊 Sales BI — Executive Summary</p>
+      <p class="db-sub">Jan 2023 – Jun 2025 &nbsp;|&nbsp; 1,000 transactions &nbsp;|&nbsp; 7 categories &nbsp;|&nbsp; 5 regions &nbsp;|&nbsp; 4 store locations</p>
+    </div>
+    <span class="badge">paulagbo84/Sales-Dashboards</span>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-val">$2.96M</div>
+      <div class="kpi-lbl">Total Revenue</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">$1.15M</div>
+      <div class="kpi-lbl">Net Profit</div>
+      <div class="kpi-tag pos">39.1% margin</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">1,000</div>
+      <div class="kpi-lbl">Total Orders</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">10,467</div>
+      <div class="kpi-lbl">Units Sold</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">24.8%</div>
+      <div class="kpi-lbl">Return Rate</div>
+      <div class="kpi-tag neg">Critical</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">$237K</div>
+      <div class="kpi-lbl">Discount Loss</div>
+      <div class="kpi-tag neg">8% of gross</div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="chart-grid">
+
+    <div class="chart-card">
+      <div class="chart-title">📦 Revenue by Product</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#378ADD"></span>Laptop</span>
+        <span><span class="legend-dot" style="background:#1D9E75"></span>Monitor</span>
+        <span><span class="legend-dot" style="background:#BA7517"></span>Desk</span>
+        <span><span class="legend-dot" style="background:#D4537E"></span>Chair</span>
+        <span><span class="legend-dot" style="background:#7F77DD"></span>Others</span>
+      </div>
+      <div style="position:relative; width:100%; height:220px;">
+        <canvas id="productChart" role="img" aria-label="Bar chart of revenue by product. Laptop leads at $502,896."></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">🗺️ Revenue by Region</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#378ADD"></span>North $612K</span>
+        <span><span class="legend-dot" style="background:#1D9E75"></span>South $601K</span>
+        <span><span class="legend-dot" style="background:#BA7517"></span>East $587K</span>
+        <span><span class="legend-dot" style="background:#D4537E"></span>West $582K</span>
+        <span><span class="legend-dot" style="background:#7F77DD"></span>Central $573K</span>
+      </div>
+      <div style="position:relative; width:100%; height:220px;">
+        <canvas id="regionChart" role="img" aria-label="Doughnut chart of revenue by region. North leads at $611,797."></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">🏆 Revenue by Salesperson</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#378ADD"></span>Revenue</span>
+      </div>
+      <div style="position:relative; width:100%; height:220px;">
+        <canvas id="salesChart" role="img" aria-label="Horizontal bar chart by salesperson. Bob leads at $541,159."></canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">📈 Quarterly Revenue Trend</div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#378ADD; border-radius:50%;"></span>2023</span>
+        <span><span class="legend-dot" style="background:#1D9E75; border-radius:50%;"></span>2024</span>
+        <span><span class="legend-dot" style="background:#BA7517; border-radius:50%;"></span>2025 (partial)</span>
+      </div>
+      <div style="position:relative; width:100%; height:220px;">
+        <canvas id="trendChart" role="img" aria-label="Line chart of quarterly revenue 2023 to 2025."></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Insights -->
+  <p class="section-hd">Key Insights</p>
+  <div class="insight-grid">
+    <div class="insight good">
+      <div class="insight-label">Top Product</div>
+      <div class="insight-val">Laptop — $502,896 (17% of revenue)</div>
+    </div>
+    <div class="insight good">
+      <div class="insight-label">Top Region</div>
+      <div class="insight-val">North — $611,797 (20.7% of revenue)</div>
+    </div>
+    <div class="insight good">
+      <div class="insight-label">Top Salesperson</div>
+      <div class="insight-val">Bob — $541,159 across 160 orders</div>
+    </div>
+    <div class="insight good">
+      <div class="insight-label">Best Store</div>
+      <div class="insight-val">Store D — $794,374 in revenue</div>
+    </div>
+    <div class="insight good">
+      <div class="insight-label">Best Promotion</div>
+      <div class="insight-val">FREESHIP — $815,219 generated</div>
+    </div>
+    <div class="insight warn">
+      <div class="insight-label">Critical — Return Rate</div>
+      <div class="insight-val">24.8% overall · Chair highest at 30.6%</div>
+    </div>
+    <div class="insight warn">
+      <div class="insight-label">Attention — Discount Loss</div>
+      <div class="insight-val">$237,384 lost (8% of gross revenue)</div>
+    </div>
+    <div class="insight warn">
+      <div class="insight-label">Attention — Revenue Anomaly</div>
+      <div class="insight-val">Oct 2023 unusually low at $45,071</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span>Analysis: Jan 2023 – Jun 2025 &nbsp;|&nbsp; Tools: R · RStudio · ggplot2 · Plotly · tidyverse · Power BI · Excel</span>
+    <span>Author: Paul Agbo &nbsp;|&nbsp; <a href="https://paulagbo84.github.io/sales-Dashboards" target="_blank">Live Dashboards</a> &nbsp;|&nbsp; <a href="https://github.com/paulagbo84/Sales-Dashboards" target="_blank">GitHub Repo</a></span>
+  </div>
+
+</div>
+
+<script>
+  const gridColor = 'rgba(0,0,0,0.06)';
+  const textColor = '#6b7280';
+
+  new Chart(document.getElementById('productChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Laptop','Monitor','Desk','Chair','Headphones','Keyboard','Phone'],
+      datasets: [{
+        data: [502896, 463000, 455000, 392000, 381000, 342000, 320421],
+        backgroundColor: ['#378ADD','#1D9E75','#BA7517','#D4537E','#7F77DD','#639922','#D85A30'],
+        borderRadius: 5, borderSkipped: false
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: textColor, font: { size: 11 }, autoSkip: false, maxRotation: 30 }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor, font: { size: 11 }, callback: v => '$' + Math.round(v/1000) + 'K' }, grid: { color: gridColor } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('regionChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['North','South','East','West','Central'],
+      datasets: [{
+        data: [611797, 601000, 587000, 582000, 573000],
+        backgroundColor: ['#378ADD','#1D9E75','#BA7517','#D4537E','#7F77DD'],
+        borderWidth: 3, borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ' $' + Math.round(ctx.raw/1000) + 'K' } } },
+      cutout: '58%'
+    }
+  });
+
+  new Chart(document.getElementById('salesChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Bob','Alice','Charlie','Frank','Diana','Eve'],
+      datasets: [{
+        data: [541159, 512000, 498000, 466000, 476000, 463000],
+        backgroundColor: ['#378ADD','#4a97e8','#5da4ef','#70b1f5','#83bef7','#96cbf9'],
+        borderRadius: 5, borderSkipped: false
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: textColor, font: { size: 11 }, callback: v => '$' + Math.round(v/1000) + 'K' }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor, font: { size: 12 } }, grid: { color: gridColor } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('trendChart'), {
+    type: 'line',
+    data: {
+      labels: ['Q1','Q2','Q3','Q4'],
+      datasets: [
+        { label: '2023', data: [285000, 310000, 298000, 320000], borderColor: '#378ADD', backgroundColor: 'rgba(55,138,221,0.08)', tension: 0.3, pointRadius: 5, fill: true },
+        { label: '2024', data: [340000, 365000, 355000, 380000], borderColor: '#1D9E75', backgroundColor: 'rgba(29,158,117,0.08)', tension: 0.3, pointRadius: 5, fill: true },
+        { label: '2025', data: [295000, 308000, null, null], borderColor: '#BA7517', backgroundColor: 'rgba(186,117,23,0.06)', tension: 0.3, pointRadius: 5, fill: true, borderDash: [5,4] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: textColor, font: { size: 11 } }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor, font: { size: 11 }, callback: v => '$' + Math.round(v/1000) + 'K' }, grid: { color: gridColor } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
